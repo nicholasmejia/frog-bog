@@ -86,6 +86,17 @@ theme_override_font_sizes/font_size = 48
 text = "x1"
 horizontal_alignment = 2
 
+[node name="LevelLabel" type="Label" parent="ScoreUI/MarginContainer/VBoxContainer" unique_id=1041260866]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_colors/font_color = Color(0.7, 0.95, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("5_font")
+theme_override_font_sizes/font_size = 40
+text = "Level: 0"
+horizontal_alignment = 2
+
 [node name="HUD" type="CanvasLayer" parent="." unique_id=324681866]
 
 [node name="TimerLabel" type="Label" parent="HUD" unique_id=1548428223]
