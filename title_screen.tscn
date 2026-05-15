@@ -17,10 +17,12 @@
 [ext_resource type="Texture2D" uid="uid://h3vafky5rfk8" path="res://art/title_text/TAKE.png" id="15_TAKE"]
 [ext_resource type="Texture2D" uid="uid://c5njr1dg5ndvi" path="res://art/title_text/NO.png" id="16_NO"]
 [ext_resource type="Texture2D" uid="uid://be4msknw0ch3u" path="res://art/title_text/PRISONERS.png" id="17_PRISONERS"]
+[ext_resource type="Script" path="res://title_screen.gd" id="18_script"]
 
 [node name="TitleScreen" type="CanvasLayer"]
 layer = 80
 process_mode = 3
+script = ExtResource("18_script")
 
 [node name="Background" type="Sprite2D" parent="."]
 texture = ExtResource("1_bg")
