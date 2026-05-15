@@ -55,6 +55,7 @@ var spawn_position := Vector2.ZERO
 var mouse_at_takeoff := Vector2.ZERO
 var mouse_moved_in_air := false
 var in_jump_cycle: bool = false
+var frozen: bool = false
 
 const RESPAWN_MARGIN := 200.0
 
@@ -94,6 +95,17 @@ func _reset_frog_state() -> void:
 	in_jump_cycle = false
 
 
+func set_frozen(value: bool) -> void:
+	frozen = value
+	if frozen:
+		velocity = Vector2.ZERO
+		charging = false
+		charge_time = 0.0
+		shake_phase = 0.0
+		sprite.offset = Vector2.ZERO
+		sprite.play("idle")
+
+
 func _emit_dust() -> void:
 	dust.global_position = Vector2(global_position.x, shadow.anchor_y + GameEvents.platform_offset.y)
 	dust.restart()
@@ -124,6 +136,10 @@ func _apply_anim_scale() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if frozen:
+		velocity = Vector2.ZERO
+		return
+
 	if (Input.is_action_just_pressed("shoot_tongue")
 			and not is_on_floor()
 			and not tongue.is_busy()):
