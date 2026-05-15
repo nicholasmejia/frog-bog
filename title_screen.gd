@@ -251,6 +251,5 @@ func _unhandled_input(event: InputEvent) -> void:
 		phase = Phase.IDLE
 		_stop_blink()
 		_kill_active_tweens()
-		visible = false
 		start_requested.emit()
 		get_viewport().set_input_as_handled()
