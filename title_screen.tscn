@@ -28,13 +28,12 @@ script = ExtResource("18_script")
 texture = ExtResource("1_bg")
 centered = false
 position = Vector2(0, 0)
-modulate = Color(1, 1, 1, 1)
 
 [node name="Black" type="ColorRect" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color(0, 0, 0, 0)
+color = Color(0, 0, 0, 1)
 mouse_filter = 2
 
 [node name="LogoLayer" type="Node2D" parent="."]
@@ -60,7 +59,7 @@ theme_override_font_sizes/font_size = 56
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 6
-modulate = Color(1, 1, 1, 1)
+modulate = Color(1, 1, 1, 0)
 
 [node name="WhiteFlash" type="ColorRect" parent="."]
 anchors_preset = 15
@@ -76,12 +75,12 @@ position = Vector2(132, 150)
 [node name="Solid" type="Sprite2D" parent="LogoLayer/L0_F"]
 texture = ExtResource("3_F")
 scale = Vector2(0.2, 0.2)
-modulate = Color(1, 1, 1, 1)
+modulate = Color(1, 1, 1, 0)
 
 [node name="Wireframe" type="Sprite2D" parent="LogoLayer/L0_F"]
 texture = ExtResource("4_F_wf")
 scale = Vector2(0.2, 0.2)
-modulate = Color(1, 1, 1, 1)
+modulate = Color(1, 1, 1, 0)
 
 [node name="L1_R" type="Node2D" parent="LogoLayer"]
 z_index = 7
@@ -90,12 +89,12 @@ position = Vector2(270, 150)
 [node name="Solid" type="Sprite2D" parent="LogoLayer/L1_R"]
 texture = ExtResource("5_R")
 scale = Vector2(0.2, 0.2)
-modulate = Color(1, 1, 1, 1)
+modulate = Color(1, 1, 1, 0)
 
 [node name="Wireframe" type="Sprite2D" parent="LogoLayer/L1_R"]
 texture = ExtResource("6_R_wf")
 scale = Vector2(0.2, 0.2)
-modulate = Color(1, 1, 1, 1)
+modulate = Color(1, 1, 1, 0)
 
 [node name="L2_O" type="Node2D" parent="LogoLayer"]
 z_index = 6
@@ -104,12 +103,12 @@ position = Vector2(408, 150)
 [node name="Solid" type="Sprite2D" parent="LogoLayer/L2_O"]
 texture = ExtResource("7_O")
 scale = Vector2(0.2, 0.2)
-modulate = Color(1, 1, 1, 1)
+modulate = Color(1, 1, 1, 0)
 
 [node name="Wireframe" type="Sprite2D" parent="LogoLayer/L2_O"]
 texture = ExtResource("8_O_wf")
 scale = Vector2(0.2, 0.2)
-modulate = Color(1, 1, 1, 1)
+modulate = Color(1, 1, 1, 0)
 
 [node name="L3_G" type="Node2D" parent="LogoLayer"]
 z_index = 5
@@ -118,12 +117,12 @@ position = Vector2(545, 150)
 [node name="Solid" type="Sprite2D" parent="LogoLayer/L3_G"]
 texture = ExtResource("9_G")
 scale = Vector2(0.2, 0.2)
-modulate = Color(1, 1, 1, 1)
+modulate = Color(1, 1, 1, 0)
 
 [node name="Wireframe" type="Sprite2D" parent="LogoLayer/L3_G"]
 texture = ExtResource("10_G_wf")
 scale = Vector2(0.2, 0.2)
-modulate = Color(1, 1, 1, 1)
+modulate = Color(1, 1, 1, 0)
 
 [node name="L4_B" type="Node2D" parent="LogoLayer"]
 z_index = 4
@@ -132,12 +131,12 @@ position = Vector2(683, 150)
 [node name="Solid" type="Sprite2D" parent="LogoLayer/L4_B"]
 texture = ExtResource("11_B")
 scale = Vector2(0.2, 0.2)
-modulate = Color(1, 1, 1, 1)
+modulate = Color(1, 1, 1, 0)
 
 [node name="Wireframe" type="Sprite2D" parent="LogoLayer/L4_B"]
 texture = ExtResource("12_B_wf")
 scale = Vector2(0.2, 0.2)
-modulate = Color(1, 1, 1, 1)
+modulate = Color(1, 1, 1, 0)
 
 [node name="L5_O" type="Node2D" parent="LogoLayer"]
 z_index = 3
@@ -146,12 +145,12 @@ position = Vector2(814, 150)
 [node name="Solid" type="Sprite2D" parent="LogoLayer/L5_O"]
 texture = ExtResource("7_O")
 scale = Vector2(0.2, 0.2)
-modulate = Color(1, 1, 1, 1)
+modulate = Color(1, 1, 1, 0)
 
 [node name="Wireframe" type="Sprite2D" parent="LogoLayer/L5_O"]
 texture = ExtResource("8_O_wf")
 scale = Vector2(0.2, 0.2)
-modulate = Color(1, 1, 1, 1)
+modulate = Color(1, 1, 1, 0)
 
 [node name="L6_G" type="Node2D" parent="LogoLayer"]
 z_index = 2
@@ -160,12 +159,12 @@ position = Vector2(951, 150)
 [node name="Solid" type="Sprite2D" parent="LogoLayer/L6_G"]
 texture = ExtResource("9_G")
 scale = Vector2(0.2, 0.2)
-modulate = Color(1, 1, 1, 1)
+modulate = Color(1, 1, 1, 0)
 
 [node name="Wireframe" type="Sprite2D" parent="LogoLayer/L6_G"]
 texture = ExtResource("10_G_wf")
 scale = Vector2(0.2, 0.2)
-modulate = Color(1, 1, 1, 1)
+modulate = Color(1, 1, 1, 0)
 
 [node name="L7_9" type="Node2D" parent="LogoLayer"]
 z_index = 1
@@ -174,12 +173,12 @@ position = Vector2(1170, 150)
 [node name="Solid" type="Sprite2D" parent="LogoLayer/L7_9"]
 texture = ExtResource("13_9")
 scale = Vector2(0.2, 0.2)
-modulate = Color(1, 1, 1, 1)
+modulate = Color(1, 1, 1, 0)
 
 [node name="Wireframe" type="Sprite2D" parent="LogoLayer/L7_9"]
 texture = ExtResource("14_9_wf")
 scale = Vector2(0.2, 0.2)
-modulate = Color(1, 1, 1, 1)
+modulate = Color(1, 1, 1, 0)
 
 [node name="L8_9" type="Node2D" parent="LogoLayer"]
 z_index = 0
@@ -188,27 +187,27 @@ position = Vector2(1303, 150)
 [node name="Solid" type="Sprite2D" parent="LogoLayer/L8_9"]
 texture = ExtResource("13_9")
 scale = Vector2(0.2, 0.2)
-modulate = Color(1, 1, 1, 1)
+modulate = Color(1, 1, 1, 0)
 
 [node name="Wireframe" type="Sprite2D" parent="LogoLayer/L8_9"]
 texture = ExtResource("14_9_wf")
 scale = Vector2(0.2, 0.2)
-modulate = Color(1, 1, 1, 1)
+modulate = Color(1, 1, 1, 0)
 
 [node name="Take" type="Sprite2D" parent="SubheadingLayer"]
 texture = ExtResource("15_TAKE")
 position = Vector2(350, 400)
 scale = Vector2(0.3, 0.3)
-modulate = Color(1, 1, 1, 1)
+modulate = Color(1, 1, 1, 0)
 
 [node name="No" type="Sprite2D" parent="SubheadingLayer"]
 texture = ExtResource("16_NO")
 position = Vector2(615, 400)
 scale = Vector2(0.18, 0.18)
-modulate = Color(1, 1, 1, 1)
+modulate = Color(1, 1, 1, 0)
 
 [node name="Prisoners" type="Sprite2D" parent="SubheadingLayer"]
 texture = ExtResource("17_PRISONERS")
 position = Vector2(1032, 400)
 scale = Vector2(0.3, 0.3)
-modulate = Color(1, 1, 1, 1)
+modulate = Color(1, 1, 1, 0)
