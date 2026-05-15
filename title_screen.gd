@@ -67,9 +67,53 @@ func _reset_to_initial_visuals() -> void:
 	press_to_play.modulate = Color(1, 1, 1, 0)
 
 
+const CASCADE_DURATION := 1.5
+const CASCADE_LETTER_LIFETIME := 0.55  # each wireframe letter visible for this long
+const REVEAL_FLASH_DURATION := 0.25
+
+
 func _run_sequence() -> void:
-	# Filled in by Tasks 6, 7, 8, 9.
+	await _play_wireframe_cascade()
+	await _play_reveal_flash()
+	# Subheading crash + letter ripple come in later tasks.
 	_enter_attract_state()
+
+
+func _play_wireframe_cascade() -> void:
+	var letter_count: int = logo_layer.get_child_count()
+	var stagger: float = (CASCADE_DURATION - CASCADE_LETTER_LIFETIME) / float(max(letter_count - 1, 1))
+	for i in range(letter_count):
+		var container: Node2D = logo_layer.get_child(i) as Node2D
+		var wireframe: Sprite2D = container.get_node("Wireframe")
+		var hue: float = float(i) / float(letter_count)
+		var hue_color: Color = Color.from_hsv(hue, 1.0, 1.0, 1.0)
+		var start_delay: float = float(i) * stagger
+		var t: Tween = create_tween().set_parallel(true)
+		_active_tweens.append(t)
+		# Fade in
+		t.tween_property(wireframe, "modulate", Color(hue_color.r, hue_color.g, hue_color.b, 1.0), CASCADE_LETTER_LIFETIME * 0.5).set_delay(start_delay)
+		# Fade out
+		t.chain().tween_property(wireframe, "modulate", Color(hue_color.r, hue_color.g, hue_color.b, 0.0), CASCADE_LETTER_LIFETIME * 0.5)
+	await get_tree().create_timer(CASCADE_DURATION).timeout
+
+
+func _play_reveal_flash() -> void:
+	# Show solid letters and remove black overlay UNDER the white flash so the
+	# swap is hidden by the flash.
+	var flash_in: Tween = create_tween()
+	_active_tweens.append(flash_in)
+	flash_in.tween_property(white_flash, "color:a", 1.0, REVEAL_FLASH_DURATION * 0.3)
+	await flash_in.finished
+	black.color.a = 0.0
+	for container in logo_layer.get_children():
+		var solid: Sprite2D = container.get_node("Solid")
+		var wireframe: Sprite2D = container.get_node("Wireframe")
+		solid.modulate = Color(1, 1, 1, 1)
+		wireframe.modulate = Color(1, 1, 1, 0)
+	var flash_out: Tween = create_tween()
+	_active_tweens.append(flash_out)
+	flash_out.tween_property(white_flash, "color:a", 0.0, REVEAL_FLASH_DURATION * 0.7)
+	await flash_out.finished
 
 
 func _enter_attract_state() -> void:
