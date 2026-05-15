@@ -76,13 +76,16 @@ const SUBHEADING_CRASH_FLASH_DURATION := 0.18
 const SUBHEADING_RECOIL_DISTANCE := 60.0
 const SUBHEADING_RECOIL_DURATION := 0.12
 const SUBHEADING_SETTLE_DURATION := 0.18
+const RIPPLE_BOUNCE_HEIGHT := 40.0
+const RIPPLE_BOUNCE_DURATION := 0.18
+const RIPPLE_STAGGER := 0.07
 
 
 func _run_sequence() -> void:
 	await _play_wireframe_cascade()
 	await _play_reveal_flash()
 	await _play_subheading_crash()
-	# Letter ripple comes in Task 8.
+	await _play_letter_ripple()
 	_enter_attract_state()
 
 
@@ -156,6 +159,22 @@ func _play_reveal_flash() -> void:
 	_active_tweens.append(flash_out)
 	flash_out.tween_property(white_flash, "color:a", 0.0, REVEAL_FLASH_DURATION * 0.7)
 	await flash_out.finished
+
+
+func _play_letter_ripple() -> void:
+	var letter_count: int = logo_layer.get_child_count()
+	for i in range(letter_count):
+		var container: Node2D = logo_layer.get_child(i) as Node2D
+		var home: Vector2 = _letter_homes[i]
+		var up_pos: Vector2 = home + Vector2(0, -RIPPLE_BOUNCE_HEIGHT)
+		var t: Tween = create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		_active_tweens.append(t)
+		t.tween_interval(float(i) * RIPPLE_STAGGER)
+		t.tween_property(container, "position", up_pos, RIPPLE_BOUNCE_DURATION * 0.5)
+		t.tween_property(container, "position", home, RIPPLE_BOUNCE_DURATION * 0.5).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
+	# Wait for the last letter's full bounce to complete.
+	var total: float = float(letter_count - 1) * RIPPLE_STAGGER + RIPPLE_BOUNCE_DURATION
+	await get_tree().create_timer(total).timeout
 
 
 func _enter_attract_state() -> void:
