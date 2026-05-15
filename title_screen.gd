@@ -90,10 +90,14 @@ func _run_sequence() -> void:
 	await _play_reveal_flash()
 	await _play_subheading_crash()
 	await _play_letter_ripple()
+	if phase != Phase.SEQUENCE:
+		return
 	_enter_attract_state()
 
 
 func _play_wireframe_cascade() -> void:
+	if phase != Phase.SEQUENCE:
+		return
 	var letter_count: int = logo_layer.get_child_count()
 	var stagger: float = (CASCADE_DURATION - CASCADE_LETTER_LIFETIME) / float(max(letter_count - 1, 1))
 	for i in range(letter_count):
@@ -112,6 +116,8 @@ func _play_wireframe_cascade() -> void:
 
 
 func _play_subheading_crash() -> void:
+	if phase != Phase.SEQUENCE:
+		return
 	# Position TAKE and PRISONERS! off-screen at their start positions.
 	take.position = _subheading_homes["take"] + Vector2(-SUBHEADING_FLY_IN_OFFSET_X, 0)
 	prisoners.position = _subheading_homes["prisoners"] + Vector2(SUBHEADING_FLY_IN_OFFSET_X, 0)
@@ -147,6 +153,8 @@ func _play_subheading_crash() -> void:
 
 
 func _play_reveal_flash() -> void:
+	if phase != Phase.SEQUENCE:
+		return
 	# Show solid letters and remove black overlay UNDER the white flash so the
 	# swap is hidden by the flash.
 	var flash_in: Tween = create_tween()
@@ -166,6 +174,8 @@ func _play_reveal_flash() -> void:
 
 
 func _play_letter_ripple() -> void:
+	if phase != Phase.SEQUENCE:
+		return
 	var letter_count: int = logo_layer.get_child_count()
 	for i in range(letter_count):
 		var container: Node2D = logo_layer.get_child(i) as Node2D
