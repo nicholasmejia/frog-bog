@@ -8,7 +8,7 @@
 [ext_resource type="Script" uid="uid://ewuixprwkxdc" path="res://main.gd" id="6_main"]
 [ext_resource type="Texture2D" uid="uid://bm4156n5gd1uw" path="res://art/swamp/main_lily_pad_platform.png" id="7_floor"]
 [ext_resource type="Script" path="res://platform.gd" id="8_platform"]
-[ext_resource type="PackedScene" uid="uid://dx4q8bfm2nt7v" path="res://title_screen.tscn" id="9_title"]
+[ext_resource type="PackedScene" uid="uid://dxv3kjl3ar58t" path="res://title_screen.tscn" id="9_title"]
 [ext_resource type="PackedScene" uid="uid://b3n7k2p8qx1cd" path="res://countdown.tscn" id="10_countdown"]
 [ext_resource type="PackedScene" uid="uid://dp7xm3nq8kfa2" path="res://pre_game_fade.tscn" id="11_pregame"]
 
