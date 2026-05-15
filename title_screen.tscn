@@ -1,0 +1,203 @@
+[gd_scene format=3 uid="uid://dx4q8bfm2nt7v"]
+
+[ext_resource type="Texture2D" uid="uid://duqe8ww3kt1jj" path="res://art/title_no_text.png" id="1_bg"]
+[ext_resource type="FontFile" uid="uid://cclv2htxa88fx" path="res://fonts/Spicy Sale.ttf" id="2_font"]
+[ext_resource type="Texture2D" uid="uid://b0d1cs3u7o6iv" path="res://art/title_text/F.png" id="3_F"]
+[ext_resource type="Texture2D" uid="uid://bavkkjmk5xcgp" path="res://art/title_text/F_wireframe.png" id="4_F_wf"]
+[ext_resource type="Texture2D" uid="uid://ctjkh6tw4fwco" path="res://art/title_text/R.png" id="5_R"]
+[ext_resource type="Texture2D" uid="uid://wjuo0sywiuvx" path="res://art/title_text/R_wireframe.png" id="6_R_wf"]
+[ext_resource type="Texture2D" uid="uid://cas2yf5y6e517" path="res://art/title_text/O.png" id="7_O"]
+[ext_resource type="Texture2D" uid="uid://b348b36876kk0" path="res://art/title_text/O_wireframe.png" id="8_O_wf"]
+[ext_resource type="Texture2D" uid="uid://oe04ryowxiws" path="res://art/title_text/G.png" id="9_G"]
+[ext_resource type="Texture2D" uid="uid://crtgdt6nn3biu" path="res://art/title_text/G_wireframe.png" id="10_G_wf"]
+[ext_resource type="Texture2D" uid="uid://ceia1mafh4o7l" path="res://art/title_text/B.png" id="11_B"]
+[ext_resource type="Texture2D" uid="uid://cs0lrrh5aj533" path="res://art/title_text/B_wireframe.png" id="12_B_wf"]
+[ext_resource type="Texture2D" uid="uid://iu1dc7pyt4q2" path="res://art/title_text/9.png" id="13_9"]
+[ext_resource type="Texture2D" uid="uid://t4ly4jj5pe8g" path="res://art/title_text/9_wireframe.png" id="14_9_wf"]
+[ext_resource type="Texture2D" uid="uid://h3vafky5rfk8" path="res://art/title_text/TAKE.png" id="15_TAKE"]
+[ext_resource type="Texture2D" uid="uid://c5njr1dg5ndvi" path="res://art/title_text/NO.png" id="16_NO"]
+[ext_resource type="Texture2D" uid="uid://be4msknw0ch3u" path="res://art/title_text/PRISONERS.png" id="17_PRISONERS"]
+
+[node name="TitleScreen" type="CanvasLayer"]
+layer = 80
+process_mode = 3
+
+[node name="Background" type="Sprite2D" parent="."]
+texture = ExtResource("1_bg")
+centered = false
+position = Vector2(0, 0)
+modulate = Color(1, 1, 1, 1)
+
+[node name="LogoLayer" type="Node2D" parent="."]
+position = Vector2(0, 0)
+
+[node name="SubheadingLayer" type="Node2D" parent="."]
+position = Vector2(0, 0)
+
+[node name="PressToPlay" type="Label" parent="."]
+anchor_left = 0.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+anchors_preset = 12
+offset_top = -120.0
+offset_bottom = -40.0
+mouse_filter = 2
+text = "Press SPACE to play"
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 56
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+modulate = Color(1, 1, 1, 0)
+
+[node name="WhiteFlash" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(1, 1, 1, 0)
+mouse_filter = 2
+
+[node name="Black" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 1)
+mouse_filter = 2
+
+[node name="L0_F" type="Node2D" parent="LogoLayer"]
+position = Vector2(132, 150)
+
+[node name="Solid" type="Sprite2D" parent="LogoLayer/L0_F"]
+texture = ExtResource("3_F")
+scale = Vector2(0.2, 0.2)
+modulate = Color(1, 1, 1, 0)
+
+[node name="Wireframe" type="Sprite2D" parent="LogoLayer/L0_F"]
+texture = ExtResource("4_F_wf")
+scale = Vector2(0.2, 0.2)
+modulate = Color(1, 1, 1, 0)
+
+[node name="L1_R" type="Node2D" parent="LogoLayer"]
+position = Vector2(270, 150)
+
+[node name="Solid" type="Sprite2D" parent="LogoLayer/L1_R"]
+texture = ExtResource("5_R")
+scale = Vector2(0.2, 0.2)
+modulate = Color(1, 1, 1, 0)
+
+[node name="Wireframe" type="Sprite2D" parent="LogoLayer/L1_R"]
+texture = ExtResource("6_R_wf")
+scale = Vector2(0.2, 0.2)
+modulate = Color(1, 1, 1, 0)
+
+[node name="L2_O" type="Node2D" parent="LogoLayer"]
+position = Vector2(408, 150)
+
+[node name="Solid" type="Sprite2D" parent="LogoLayer/L2_O"]
+texture = ExtResource("7_O")
+scale = Vector2(0.2, 0.2)
+modulate = Color(1, 1, 1, 0)
+
+[node name="Wireframe" type="Sprite2D" parent="LogoLayer/L2_O"]
+texture = ExtResource("8_O_wf")
+scale = Vector2(0.2, 0.2)
+modulate = Color(1, 1, 1, 0)
+
+[node name="L3_G" type="Node2D" parent="LogoLayer"]
+position = Vector2(545, 150)
+
+[node name="Solid" type="Sprite2D" parent="LogoLayer/L3_G"]
+texture = ExtResource("9_G")
+scale = Vector2(0.2, 0.2)
+modulate = Color(1, 1, 1, 0)
+
+[node name="Wireframe" type="Sprite2D" parent="LogoLayer/L3_G"]
+texture = ExtResource("10_G_wf")
+scale = Vector2(0.2, 0.2)
+modulate = Color(1, 1, 1, 0)
+
+[node name="L4_B" type="Node2D" parent="LogoLayer"]
+position = Vector2(683, 150)
+
+[node name="Solid" type="Sprite2D" parent="LogoLayer/L4_B"]
+texture = ExtResource("11_B")
+scale = Vector2(0.2, 0.2)
+modulate = Color(1, 1, 1, 0)
+
+[node name="Wireframe" type="Sprite2D" parent="LogoLayer/L4_B"]
+texture = ExtResource("12_B_wf")
+scale = Vector2(0.2, 0.2)
+modulate = Color(1, 1, 1, 0)
+
+[node name="L5_O" type="Node2D" parent="LogoLayer"]
+position = Vector2(814, 150)
+
+[node name="Solid" type="Sprite2D" parent="LogoLayer/L5_O"]
+texture = ExtResource("7_O")
+scale = Vector2(0.2, 0.2)
+modulate = Color(1, 1, 1, 0)
+
+[node name="Wireframe" type="Sprite2D" parent="LogoLayer/L5_O"]
+texture = ExtResource("8_O_wf")
+scale = Vector2(0.2, 0.2)
+modulate = Color(1, 1, 1, 0)
+
+[node name="L6_G" type="Node2D" parent="LogoLayer"]
+position = Vector2(951, 150)
+
+[node name="Solid" type="Sprite2D" parent="LogoLayer/L6_G"]
+texture = ExtResource("9_G")
+scale = Vector2(0.2, 0.2)
+modulate = Color(1, 1, 1, 0)
+
+[node name="Wireframe" type="Sprite2D" parent="LogoLayer/L6_G"]
+texture = ExtResource("10_G_wf")
+scale = Vector2(0.2, 0.2)
+modulate = Color(1, 1, 1, 0)
+
+[node name="L7_9" type="Node2D" parent="LogoLayer"]
+position = Vector2(1170, 150)
+
+[node name="Solid" type="Sprite2D" parent="LogoLayer/L7_9"]
+texture = ExtResource("13_9")
+scale = Vector2(0.2, 0.2)
+modulate = Color(1, 1, 1, 0)
+
+[node name="Wireframe" type="Sprite2D" parent="LogoLayer/L7_9"]
+texture = ExtResource("14_9_wf")
+scale = Vector2(0.2, 0.2)
+modulate = Color(1, 1, 1, 0)
+
+[node name="L8_9" type="Node2D" parent="LogoLayer"]
+position = Vector2(1303, 150)
+
+[node name="Solid" type="Sprite2D" parent="LogoLayer/L8_9"]
+texture = ExtResource("13_9")
+scale = Vector2(0.2, 0.2)
+modulate = Color(1, 1, 1, 0)
+
+[node name="Wireframe" type="Sprite2D" parent="LogoLayer/L8_9"]
+texture = ExtResource("14_9_wf")
+scale = Vector2(0.2, 0.2)
+modulate = Color(1, 1, 1, 0)
+
+[node name="Take" type="Sprite2D" parent="SubheadingLayer"]
+texture = ExtResource("15_TAKE")
+position = Vector2(350, 400)
+scale = Vector2(0.3, 0.3)
+modulate = Color(1, 1, 1, 0)
+
+[node name="No" type="Sprite2D" parent="SubheadingLayer"]
+texture = ExtResource("16_NO")
+position = Vector2(615, 400)
+scale = Vector2(0.18, 0.18)
+modulate = Color(1, 1, 1, 0)
+
+[node name="Prisoners" type="Sprite2D" parent="SubheadingLayer"]
+texture = ExtResource("17_PRISONERS")
+position = Vector2(1032, 400)
+scale = Vector2(0.3, 0.3)
+modulate = Color(1, 1, 1, 0)
