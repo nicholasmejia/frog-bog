@@ -70,12 +70,19 @@ func _reset_to_initial_visuals() -> void:
 const CASCADE_DURATION := 1.5
 const CASCADE_LETTER_LIFETIME := 0.55  # each wireframe letter visible for this long
 const REVEAL_FLASH_DURATION := 0.25
+const SUBHEADING_FLY_IN_DURATION := 0.45
+const SUBHEADING_FLY_IN_OFFSET_X := 1200.0
+const SUBHEADING_CRASH_FLASH_DURATION := 0.18
+const SUBHEADING_RECOIL_DISTANCE := 60.0
+const SUBHEADING_RECOIL_DURATION := 0.12
+const SUBHEADING_SETTLE_DURATION := 0.18
 
 
 func _run_sequence() -> void:
 	await _play_wireframe_cascade()
 	await _play_reveal_flash()
-	# Subheading crash + letter ripple come in later tasks.
+	await _play_subheading_crash()
+	# Letter ripple comes in Task 8.
 	_enter_attract_state()
 
 
@@ -95,6 +102,41 @@ func _play_wireframe_cascade() -> void:
 		# Fade out
 		t.chain().tween_property(wireframe, "modulate", Color(hue_color.r, hue_color.g, hue_color.b, 0.0), CASCADE_LETTER_LIFETIME * 0.5)
 	await get_tree().create_timer(CASCADE_DURATION).timeout
+
+
+func _play_subheading_crash() -> void:
+	# Position TAKE and PRISONERS! off-screen at their start positions.
+	take.position = _subheading_homes["take"] + Vector2(-SUBHEADING_FLY_IN_OFFSET_X, 0)
+	prisoners.position = _subheading_homes["prisoners"] + Vector2(SUBHEADING_FLY_IN_OFFSET_X, 0)
+	take.modulate = Color(1, 1, 1, 1)
+	prisoners.modulate = Color(1, 1, 1, 1)
+
+	var fly_in: Tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	_active_tweens.append(fly_in)
+	fly_in.tween_property(take, "position", _subheading_homes["take"], SUBHEADING_FLY_IN_DURATION)
+	fly_in.tween_property(prisoners, "position", _subheading_homes["prisoners"], SUBHEADING_FLY_IN_DURATION)
+	await fly_in.finished
+
+	# Crash flash + NO reveal happen simultaneously.
+	var flash: Tween = create_tween()
+	_active_tweens.append(flash)
+	flash.tween_property(white_flash, "color:a", 1.0, SUBHEADING_CRASH_FLASH_DURATION * 0.3)
+	flash.tween_property(white_flash, "color:a", 0.0, SUBHEADING_CRASH_FLASH_DURATION * 0.7)
+	no_word.modulate = Color(1, 1, 1, 1)
+
+	# Recoil outward...
+	var recoil: Tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_active_tweens.append(recoil)
+	recoil.tween_property(take, "position", _subheading_homes["take"] + Vector2(-SUBHEADING_RECOIL_DISTANCE, 0), SUBHEADING_RECOIL_DURATION)
+	recoil.tween_property(prisoners, "position", _subheading_homes["prisoners"] + Vector2(SUBHEADING_RECOIL_DISTANCE, 0), SUBHEADING_RECOIL_DURATION)
+	await recoil.finished
+
+	# ...then settle back to home.
+	var settle: Tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	_active_tweens.append(settle)
+	settle.tween_property(take, "position", _subheading_homes["take"], SUBHEADING_SETTLE_DURATION)
+	settle.tween_property(prisoners, "position", _subheading_homes["prisoners"], SUBHEADING_SETTLE_DURATION)
+	await settle.finished
 
 
 func _play_reveal_flash() -> void:
