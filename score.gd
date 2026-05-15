@@ -74,6 +74,6 @@ func _refresh_level() -> void:
 	if lvl >= GameEvents.MAX_LEVEL:
 		level_label.text = "Level: %d (MAX)" % lvl
 	elif lvl == 0:
-		level_label.text = "Level: 0"
+		level_label.text = "Level: 0"  # suppress (0/3) at default state; progress shown mid-climb only
 	else:
 		level_label.text = "Level: %d (%d/%d)" % [lvl, GameEvents.level_progress, GameEvents.FLIES_PER_LEVEL]
