@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://efs2ew4qcxr7" path="res://tongue.tscn" id="9_tongue"]
 [ext_resource type="Script" path="res://shadow.gd" id="10_shadow"]
 [ext_resource type="Script" path="res://bullet_time.gd" id="11_bullet_time"]
+[ext_resource type="Script" path="res://level_system.gd" id="12_level_system"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_yakrr"]
 animations = [{
@@ -163,3 +164,6 @@ color = Color(0.65, 0.55, 0.4, 0.75)
 
 [node name="BulletTime" type="Node" parent="."]
 script = ExtResource("11_bullet_time")
+
+[node name="LevelSystem" type="Node" parent="."]
+script = ExtResource("12_level_system")
