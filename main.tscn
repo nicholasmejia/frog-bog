@@ -94,7 +94,7 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 6
 theme_override_fonts/font = ExtResource("5_font")
 theme_override_font_sizes/font_size = 40
-text = "Level: 0"
+text = "Level: 0 (0/3)"
 horizontal_alignment = 2
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=324681866]
