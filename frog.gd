@@ -11,6 +11,10 @@ const SHAKE_MAX_AMPLITUDE := 5.0
 const SHAKE_MIN_FREQ := 18.0
 const SHAKE_MAX_FREQ := 55.0
 
+const L1_CHARGE_SPEED_MULT := 1.5
+const L1_MAX_JUMP_VY_MULT := 1.10
+const L1_JUMP_VX_MULT := 1.15
+
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var tongue_origin: Marker2D = $TongueOrigin
 @onready var tongue: Node2D = $TongueOrigin/Tongue
@@ -51,6 +55,7 @@ var spawn_position := Vector2.ZERO
 var mouse_at_takeoff := Vector2.ZERO
 var mouse_moved_in_air := false
 var in_jump_cycle: bool = false
+var frozen: bool = false
 
 const RESPAWN_MARGIN := 200.0
 
@@ -90,6 +95,17 @@ func _reset_frog_state() -> void:
 	in_jump_cycle = false
 
 
+func set_frozen(value: bool) -> void:
+	frozen = value
+	if frozen:
+		velocity = Vector2.ZERO
+		charging = false
+		charge_time = 0.0
+		shake_phase = 0.0
+		sprite.offset = Vector2.ZERO
+		sprite.play("idle")
+
+
 func _emit_dust() -> void:
 	dust.global_position = Vector2(global_position.x, shadow.anchor_y + GameEvents.platform_offset.y)
 	dust.restart()
@@ -120,6 +136,10 @@ func _apply_anim_scale() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if frozen:
+		velocity = Vector2.ZERO
+		return
+
 	if (Input.is_action_just_pressed("shoot_tongue")
 			and not is_on_floor()
 			and not tongue.is_busy()):
@@ -139,7 +159,8 @@ func _physics_process(delta: float) -> void:
 			sprite.play("charging")
 			GameEvents.platform_charge.emit()
 		if charging:
-			charge_time = min(charge_time + delta, MAX_CHARGE)
+			var charge_mult: float = L1_CHARGE_SPEED_MULT if GameEvents.frog_level >= 1 else 1.0
+			charge_time = min(charge_time + delta * charge_mult, MAX_CHARGE)
 			_update_shake(delta)
 		if charging and Input.is_action_just_released("jump"):
 			_launch()
@@ -257,8 +278,11 @@ func _launch() -> void:
 	sprite.offset = Vector2.ZERO
 	var t: float = clampf(charge_time, MIN_CHARGE, MAX_CHARGE)
 	var ratio: float = (t - MIN_CHARGE) / (MAX_CHARGE - MIN_CHARGE)
-	var vy: float = lerpf(MIN_JUMP_VY, MAX_JUMP_VY, ratio)
-	var vx: float = lerpf(MIN_JUMP_VX, MAX_JUMP_VX, ratio)
+	var max_jump_vy_mult: float = L1_MAX_JUMP_VY_MULT if GameEvents.frog_level >= 1 else 1.0
+	var jump_vx_mult: float = L1_JUMP_VX_MULT if GameEvents.frog_level >= 1 else 1.0
+	var effective_max_jump_vy: float = MAX_JUMP_VY * max_jump_vy_mult
+	var vy: float = lerpf(MIN_JUMP_VY, effective_max_jump_vy, ratio)
+	var vx: float = lerpf(MIN_JUMP_VX * jump_vx_mult, MAX_JUMP_VX * jump_vx_mult, ratio)
 	velocity.x = vx if facing_right else -vx
 	velocity.y = vy
 	charge_time = 0.0

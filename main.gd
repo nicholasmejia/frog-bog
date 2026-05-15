@@ -2,27 +2,31 @@ extends Node2D
 
 const GAME_DURATION := 60.0
 
-enum State { MENU, PLAYING, GAME_OVER }
+enum State { TITLE, PRE_GAME, COUNTDOWN, PLAYING, GAME_OVER }
 
 @onready var frog: CharacterBody2D = $Frog
 @onready var score_ui: CanvasLayer = $ScoreUI
 @onready var timer_label: Label = $HUD/TimerLabel
-@onready var start_screen: CanvasLayer = $StartScreen
+@onready var title_screen: CanvasLayer = $TitleScreen
+@onready var pre_game_fade: CanvasLayer = $PreGameFade
+@onready var countdown: CanvasLayer = $Countdown
 @onready var game_over_screen: CanvasLayer = $GameOverScreen
 @onready var final_score_label: Label = $GameOverScreen/Center/VBox/FinalScoreLabel
-@onready var start_button: Button = $StartScreen/Center/VBox/StartButton
 @onready var restart_button: Button = $GameOverScreen/Center/VBox/RestartButton
 
-var state: int = State.MENU
+var state: int = State.TITLE
 var time_left: float = GAME_DURATION
 var frog_spawn: Vector2 = Vector2.ZERO
 
 
 func _ready() -> void:
 	frog_spawn = frog.global_position
-	start_button.pressed.connect(_begin_game)
-	restart_button.pressed.connect(_begin_game)
-	_enter_menu()
+	restart_button.pressed.connect(_on_restart_pressed)
+	title_screen.start_requested.connect(_on_title_start_requested)
+	pre_game_fade.faded_to_black.connect(_on_fade_to_black)
+	pre_game_fade.faded_in.connect(_on_fade_in)
+	countdown.countdown_finished.connect(_on_countdown_finished)
+	_enter_title()
 
 
 func _process(delta: float) -> void:
@@ -41,30 +45,61 @@ func _update_timer_label() -> void:
 	timer_label.text = "Time: %d" % int(ceil(time_left))
 
 
-func _enter_menu() -> void:
-	state = State.MENU
+func _enter_title() -> void:
+	state = State.TITLE
 	time_left = GAME_DURATION
 	_update_timer_label()
-	start_screen.visible = true
+	frog.global_position = frog_spawn
+	frog.set_frozen(true)
 	game_over_screen.visible = false
 	get_tree().paused = true
+	title_screen.play()
 
 
-func _begin_game() -> void:
+func _on_title_start_requested() -> void:
+	_begin_pre_game()
+
+
+func _on_restart_pressed() -> void:
+	_begin_pre_game()
+
+
+func _begin_pre_game() -> void:
+	state = State.PRE_GAME
+	game_over_screen.visible = false
+	# Engine stays paused; PreGameFade has process_mode = ALWAYS so it animates anyway.
+	get_tree().paused = true
+	pre_game_fade.play()
+
+
+func _on_fade_to_black() -> void:
+	# At full black, reset the world for a fresh run.
 	_clear_flies()
 	frog.global_position = frog_spawn
 	frog.velocity = Vector2.ZERO
-	GameEvents.game_started.emit()
-	state = State.PLAYING
+	frog.set_frozen(true)
 	time_left = GAME_DURATION
 	_update_timer_label()
-	start_screen.visible = false
-	game_over_screen.visible = false
-	get_tree().paused = false
+	# Hide the title screen if it's still visible (e.g. first run).
+	title_screen.visible = false
+
+
+func _on_fade_in() -> void:
+	# Black has just faded out; start the countdown.
+	state = State.COUNTDOWN
+	get_tree().paused = false  # Flies must spawn during the countdown.
+	countdown.play()
+
+
+func _on_countdown_finished() -> void:
+	state = State.PLAYING
+	frog.set_frozen(false)
+	GameEvents.game_started.emit()
 
 
 func _end_game() -> void:
 	state = State.GAME_OVER
+	frog.set_frozen(true)
 	get_tree().paused = true
 	var final: int = score_ui.get_score()
 	final_score_label.text = "Final Score: %d" % final

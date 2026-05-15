@@ -9,11 +9,25 @@ signal hit_fly(fly)
 const MAX_LENGTH := 320.0
 const EXTEND_SPEED := 1800.0
 const RETRACT_SPEED := 2400.0
+const L2_TONGUE_SPEED_MULT := 1.20
+const L2_TONGUE_LENGTH_MULT := 1.15
 
 var direction := Vector2.RIGHT
 var current_length := 0.0
 var is_firing := false
 var is_retracting := false
+
+
+func _is_l2_active() -> bool:
+	return GameEvents.frog_level >= 2
+
+
+func _effective_max_length() -> float:
+	return (MAX_LENGTH * L2_TONGUE_LENGTH_MULT) if _is_l2_active() else MAX_LENGTH
+
+
+func _effective_speed_mult() -> float:
+	return L2_TONGUE_SPEED_MULT if _is_l2_active() else 1.0
 
 
 func _ready() -> void:
@@ -54,14 +68,15 @@ func fire(aim_direction: Vector2) -> void:
 
 func _process(delta: float) -> void:
 	if is_firing:
-		current_length += EXTEND_SPEED * delta
-		if current_length >= MAX_LENGTH:
-			current_length = MAX_LENGTH
+		var max_len: float = _effective_max_length()
+		current_length += EXTEND_SPEED * _effective_speed_mult() * delta
+		if current_length >= max_len:
+			current_length = max_len
 			is_firing = false
 			is_retracting = true
 		_update_tongue()
 	elif is_retracting:
-		current_length -= RETRACT_SPEED * delta
+		current_length -= RETRACT_SPEED * _effective_speed_mult() * delta
 		if current_length <= 0.0:
 			current_length = 0.0
 			is_retracting = false

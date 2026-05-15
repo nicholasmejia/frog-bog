@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://dp7xm3nq8kfa2"]
+
+[ext_resource type="Script" path="res://pre_game_fade.gd" id="1_pregamefade"]
+
+[node name="PreGameFade" type="CanvasLayer"]
+layer = 100
+process_mode = 3
+script = ExtResource("1_pregamefade")
+
+[node name="Rect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0)
+mouse_filter = 2
