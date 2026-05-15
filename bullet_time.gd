@@ -6,6 +6,7 @@ extends Node
 # writes GameEvents.time_factor each physics frame for the world slow-down effect.
 
 const DURATION := 3.0
+const L3_DURATION := 5.0
 const TARGET_FACTOR := 0.12
 const LERP_RATE := 14.0
 const PULSE_SPEED := 7.0
@@ -16,6 +17,10 @@ var sparkles: CPUParticles2D
 var has_charge: bool = false
 var remaining: float = 0.0
 var pulse_phase: float = 0.0
+
+
+func _effective_duration() -> float:
+	return L3_DURATION if GameEvents.frog_level >= GameEvents.MAX_LEVEL else DURATION
 
 
 func _ready() -> void:
@@ -71,7 +76,7 @@ func _update_visual(delta: float) -> void:
 
 func _activate() -> void:
 	has_charge = false
-	remaining = DURATION
+	remaining = _effective_duration()
 	sparkles.emitting = false
 	sprite.modulate = Color(1, 1, 1, 1)
 
