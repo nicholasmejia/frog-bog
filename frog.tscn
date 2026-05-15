@@ -1,0 +1,165 @@
+[gd_scene format=3 uid="uid://bjtjyqvn2lsjy"]
+
+[ext_resource type="Script" uid="uid://1wusaj5wurxa" path="res://frog.gd" id="1_cvt0w"]
+[ext_resource type="Texture2D" uid="uid://b20jrv6882som" path="res://art/frog_sprites/down.png" id="1_rd326"]
+[ext_resource type="Texture2D" uid="uid://re6qqsoaxjia" path="res://art/frog_sprites/down_left.png" id="2_cvt0w"]
+[ext_resource type="Texture2D" uid="uid://bn6siykn42pd8" path="res://art/frog_sprites/left.png" id="3_40hiu"]
+[ext_resource type="Texture2D" uid="uid://cjj0rwqfew2qu" path="res://art/frog_sprites/up.png" id="4_omj1a"]
+[ext_resource type="Texture2D" uid="uid://b0vasodokg6uk" path="res://art/frog_sprites/up_left.png" id="5_8kk5g"]
+[ext_resource type="Texture2D" uid="uid://o0oa0uc3j0sn" path="res://art/frog_sprites/idle.png" id="6_aumaf"]
+[ext_resource type="Texture2D" uid="uid://m84uye2kj4b6" path="res://art/frog_sprites/frog_charging_fixed.png" id="7_40hiu"]
+[ext_resource type="Texture2D" uid="uid://ss614pde8qw1" path="res://art/frog_sprites/jumping.png" id="7_o353j"]
+[ext_resource type="PackedScene" uid="uid://efs2ew4qcxr7" path="res://tongue.tscn" id="9_tongue"]
+[ext_resource type="Script" path="res://shadow.gd" id="10_shadow"]
+[ext_resource type="Script" path="res://bullet_time.gd" id="11_bullet_time"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yakrr"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_rd326")
+}],
+"loop": true,
+"name": &"aim_down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_cvt0w")
+}],
+"loop": true,
+"name": &"aim_down_angle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_40hiu")
+}],
+"loop": true,
+"name": &"aim_side",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_omj1a")
+}],
+"loop": true,
+"name": &"aim_up",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_8kk5g")
+}],
+"loop": true,
+"name": &"aim_up_angle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_40hiu")
+}],
+"loop": true,
+"name": &"charging",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_aumaf")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_o353j")
+}],
+"loop": true,
+"name": &"jump",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_frog"]
+size = Vector2(120, 90)
+
+[node name="Frog" type="CharacterBody2D" unique_id=1395679288]
+script = ExtResource("1_cvt0w")
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=203217843]
+sprite_frames = SubResource("SpriteFrames_yakrr")
+animation = &"aim_up_angle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1899109363]
+position = Vector2(0, 50)
+shape = SubResource("RectangleShape2D_frog")
+
+[node name="TongueOrigin" type="Marker2D" parent="." unique_id=1082387392]
+
+[node name="Tongue" parent="TongueOrigin" unique_id=1130829655 instance=ExtResource("9_tongue")]
+
+[node name="Shadow" type="Node2D" parent="."]
+top_level = true
+z_as_relative = false
+z_index = -5
+script = ExtResource("10_shadow")
+
+[node name="DustParticles" type="CPUParticles2D" parent="."]
+top_level = true
+z_as_relative = false
+z_index = -4
+emitting = false
+amount = 18
+lifetime = 0.5
+one_shot = true
+explosiveness = 0.85
+emission_shape = 3
+emission_rect_extents = Vector2(40, 2)
+direction = Vector2(0, -1)
+spread = 70.0
+gravity = Vector2(0, 220)
+initial_velocity_min = 60.0
+initial_velocity_max = 140.0
+scale_amount_min = 6.0
+scale_amount_max = 12.0
+color = Color(0.65, 0.55, 0.4, 0.75)
+
+[node name="LandDustLeft" type="CPUParticles2D" parent="."]
+top_level = true
+z_as_relative = false
+z_index = -4
+emitting = false
+amount = 12
+lifetime = 0.5
+one_shot = true
+explosiveness = 0.95
+direction = Vector2(-1, -0.6)
+spread = 35.0
+gravity = Vector2(0, 260)
+initial_velocity_min = 90.0
+initial_velocity_max = 180.0
+scale_amount_min = 6.0
+scale_amount_max = 12.0
+color = Color(0.65, 0.55, 0.4, 0.75)
+
+[node name="LandDustRight" type="CPUParticles2D" parent="."]
+top_level = true
+z_as_relative = false
+z_index = -4
+emitting = false
+amount = 12
+lifetime = 0.5
+one_shot = true
+explosiveness = 0.95
+direction = Vector2(1, -0.6)
+spread = 35.0
+gravity = Vector2(0, 260)
+initial_velocity_min = 90.0
+initial_velocity_max = 180.0
+scale_amount_min = 6.0
+scale_amount_max = 12.0
+color = Color(0.65, 0.55, 0.4, 0.75)
+
+[node name="BulletTime" type="Node" parent="."]
+script = ExtResource("11_bullet_time")

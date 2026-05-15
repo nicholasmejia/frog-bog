@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://b8flybjtjyrr1"]
+
+[ext_resource type="Script" path="res://fly.gd" id="1_fly"]
+[ext_resource type="Texture2D" path="res://art/fly_sprites/fly_wings_down.png" id="2_wdown"]
+[ext_resource type="Texture2D" path="res://art/fly_sprites/fly_wings_up.png" id="3_wup"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_fly"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_wdown")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_wup")
+}],
+"loop": true,
+"name": &"default",
+"speed": 16.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fly"]
+radius = 19.6
+
+[node name="Fly" type="Area2D"]
+collision_layer = 1
+collision_mask = 1
+script = ExtResource("1_fly")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.084, 0.084)
+sprite_frames = SubResource("SpriteFrames_fly")
+animation = &"default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_fly")
