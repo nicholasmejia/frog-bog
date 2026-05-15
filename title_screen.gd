@@ -24,6 +24,7 @@ var phase: int = Phase.IDLE
 var _letter_homes: Array[Vector2] = []
 var _subheading_homes: Dictionary = {}
 var _active_tweens: Array[Tween] = []
+var _blink_tween: Tween = null
 
 
 func _ready() -> void:
@@ -79,6 +80,9 @@ const SUBHEADING_SETTLE_DURATION := 0.18
 const RIPPLE_BOUNCE_HEIGHT := 40.0
 const RIPPLE_BOUNCE_DURATION := 0.18
 const RIPPLE_STAGGER := 0.07
+const PROMPT_FADE_IN_DURATION := 0.35
+const PROMPT_BLINK_PERIOD := 1.0  # one full on/off cycle
+const PROMPT_BLINK_MIN_ALPHA := 0.25
 
 
 func _run_sequence() -> void:
@@ -179,7 +183,7 @@ func _play_letter_ripple() -> void:
 
 func _enter_attract_state() -> void:
 	phase = Phase.ATTRACT
-	# Fully populated by Task 9; for now, just compose the final image.
+	# Snap to the final composition in case we got here via skip.
 	black.color = Color(0, 0, 0, 0)
 	white_flash.color = Color(1, 1, 1, 0)
 	for container in logo_layer.get_children():
@@ -187,10 +191,34 @@ func _enter_attract_state() -> void:
 		var wireframe: Sprite2D = container.get_node("Wireframe")
 		solid.modulate = Color(1, 1, 1, 1)
 		wireframe.modulate = Color(1, 1, 1, 0)
+		(container as Node2D).position = _letter_homes[container.get_index()]
 	take.modulate = Color(1, 1, 1, 1)
 	no_word.modulate = Color(1, 1, 1, 1)
 	prisoners.modulate = Color(1, 1, 1, 1)
-	press_to_play.modulate = Color(1, 1, 1, 1)
+	take.position = _subheading_homes["take"]
+	prisoners.position = _subheading_homes["prisoners"]
+	no_word.position = _subheading_homes["no"]
+
+	press_to_play.modulate = Color(1, 1, 1, 0)
+	var fade: Tween = create_tween()
+	_active_tweens.append(fade)
+	fade.tween_property(press_to_play, "modulate:a", 1.0, PROMPT_FADE_IN_DURATION)
+	await fade.finished
+	_start_blink()
+
+
+func _start_blink() -> void:
+	if _blink_tween and _blink_tween.is_valid():
+		_blink_tween.kill()
+	_blink_tween = create_tween().set_loops()
+	_blink_tween.tween_property(press_to_play, "modulate:a", PROMPT_BLINK_MIN_ALPHA, PROMPT_BLINK_PERIOD * 0.5)
+	_blink_tween.tween_property(press_to_play, "modulate:a", 1.0, PROMPT_BLINK_PERIOD * 0.5)
+
+
+func _stop_blink() -> void:
+	if _blink_tween and _blink_tween.is_valid():
+		_blink_tween.kill()
+		_blink_tween = null
 
 
 func _kill_active_tweens() -> void:
@@ -211,5 +239,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 	elif phase == Phase.ATTRACT:
 		phase = Phase.IDLE
+		_stop_blink()
+		_kill_active_tweens()
+		visible = false
 		start_requested.emit()
 		get_viewport().set_input_as_handled()
