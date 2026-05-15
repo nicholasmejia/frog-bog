@@ -37,13 +37,13 @@ func _on_game_started() -> void:
 
 
 func _reset(silent: bool) -> void:
-	var level_changed: bool = GameEvents.frog_level != 0
-	var progress_changed: bool = GameEvents.level_progress != 0
+	var had_level: bool = GameEvents.frog_level != 0
+	var had_progress: bool = GameEvents.level_progress != 0
 	GameEvents.frog_level = 0
 	GameEvents.level_progress = 0
 	if silent:
 		return
-	if progress_changed:
+	if had_progress:
 		GameEvents.level_progress_changed.emit(0)
-	if level_changed:
+	if had_level:
 		GameEvents.level_changed.emit(0)
