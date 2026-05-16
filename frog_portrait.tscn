@@ -1,0 +1,37 @@
+[gd_scene load_steps=10 format=3 uid="uid://b1frogportrait001"]
+
+[ext_resource type="Script" path="res://frog_portrait.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/clean_portraits/Frame.png" id="2_frame"]
+[ext_resource type="Texture2D" path="res://art/clean_portraits/Idle.png" id="3_idle"]
+[ext_resource type="Texture2D" path="res://art/clean_portraits/Charging.png" id="4_charging"]
+[ext_resource type="Texture2D" path="res://art/clean_portraits/Jumping.png" id="5_jumping"]
+[ext_resource type="Texture2D" path="res://art/clean_portraits/BulletTime.png" id="6_bullettime"]
+[ext_resource type="Texture2D" path="res://art/clean_portraits/LevelUp.png" id="7_levelup"]
+[ext_resource type="Texture2D" path="res://art/clean_portraits/Hurt.png" id="8_hurt"]
+[ext_resource type="Texture2D" path="res://art/clean_portraits/EatFinished.png" id="9_eatfinished"]
+
+[node name="FrogPortrait" type="CanvasLayer"]
+process_mode = 3
+visible = false
+script = ExtResource("1_script")
+
+[node name="Anchor" type="Control" parent="."]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = -20.0
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="Frame" type="TextureRect" parent="Anchor"]
+texture = ExtResource("2_frame")
+stretch_mode = 0
+mouse_filter = 2
+
+[node name="Sprite" type="TextureRect" parent="Anchor"]
+texture = ExtResource("3_idle")
+stretch_mode = 0
+mouse_filter = 2
