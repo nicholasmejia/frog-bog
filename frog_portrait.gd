@@ -2,34 +2,33 @@ extends CanvasLayer
 
 # Frog Portrait HUD.
 # Displays one of seven state portraits (Idle, Charging, Jumping, BulletTime,
-# LevelUp, Hurt, EatFinished) over a static Frame. Texture selection follows a
-# base-state + single-override model: base = continuous game state, override =
-# 2-second timed reaction. New overrides replace old. When the override timer
-# expires, the base state resumes. Game-over is itself a base state (highest
-# priority) that pins EatFinished until restart.
+# LevelUp, Hurt, EatFinished) over a static Frame. Each portrait is its own
+# TextureRect child of Anchor — independently positioned and sized in the editor.
+# Texture selection follows a base-state + single-override model: base = continuous
+# game state, override = timed reaction (LevelUp/Hurt 2s, EatFinished 1s). New
+# overrides replace old. When the override timer expires, the base state resumes.
+# Game-over is itself a base state (highest priority) that pins EatFinished until
+# restart.
 
 enum PortraitState { IDLE, CHARGING, JUMPING, BULLET_TIME, LEVEL_UP, HURT, EAT_FINISHED }
 
 const OVERRIDE_DURATION := 2.0
-const OFFSET_TWEEN_TIME := 0.08
+const EAT_FINISHED_DURATION := 1.0
 
-const PORTRAIT_CONFIG := {
-	PortraitState.IDLE:         { "texture": preload("res://art/clean_portraits/Idle.png"),        "offset": Vector2.ZERO },
-	PortraitState.CHARGING:     { "texture": preload("res://art/clean_portraits/Charging.png"),    "offset": Vector2.ZERO },
-	PortraitState.JUMPING:      { "texture": preload("res://art/clean_portraits/Jumping.png"),     "offset": Vector2.ZERO },
-	PortraitState.BULLET_TIME:  { "texture": preload("res://art/clean_portraits/BulletTime.png"),  "offset": Vector2.ZERO },
-	PortraitState.LEVEL_UP:     { "texture": preload("res://art/clean_portraits/LevelUp.png"),     "offset": Vector2.ZERO },
-	PortraitState.HURT:         { "texture": preload("res://art/clean_portraits/Hurt.png"),        "offset": Vector2.ZERO },
-	PortraitState.EAT_FINISHED: { "texture": preload("res://art/clean_portraits/EatFinished.png"), "offset": Vector2.ZERO },
+@onready var _portraits: Dictionary = {
+	PortraitState.IDLE:         $Anchor/Idle,
+	PortraitState.CHARGING:     $Anchor/Charging,
+	PortraitState.JUMPING:      $Anchor/Jumping,
+	PortraitState.BULLET_TIME:  $Anchor/BulletTime,
+	PortraitState.LEVEL_UP:     $Anchor/LevelUp,
+	PortraitState.HURT:         $Anchor/Hurt,
+	PortraitState.EAT_FINISHED: $Anchor/EatFinished,
 }
-
-@onready var sprite: TextureRect = $Anchor/Sprite
 
 var _override_state: int = -1
 var _override_remaining: float = 0.0
 var _game_over: bool = false
 var _current_applied: int = -1
-var _offset_tween: Tween = null
 var _levelup_pending: bool = false
 
 
@@ -39,7 +38,7 @@ func _ready() -> void:
 	GameEvents.frog_fell.connect(_on_frog_fell)
 	GameEvents.game_started.connect(_on_game_started)
 	GameEvents.game_ended.connect(_on_game_ended)
-	_apply_state(PortraitState.IDLE, true)
+	_apply_state(PortraitState.IDLE)
 
 
 func _process(delta: float) -> void:
@@ -50,7 +49,7 @@ func _process(delta: float) -> void:
 			_override_state = -1
 	var desired: int = _compute_desired_state()
 	if desired != _current_applied:
-		_apply_state(desired, false)
+		_apply_state(desired)
 
 
 func _compute_desired_state() -> int:
@@ -67,23 +66,15 @@ func _compute_desired_state() -> int:
 	return PortraitState.IDLE
 
 
-func _apply_state(state: int, instant: bool) -> void:
+func _apply_state(state: int) -> void:
 	_current_applied = state
-	var cfg: Dictionary = PORTRAIT_CONFIG[state]
-	sprite.texture = cfg["texture"]
-	var target_offset: Vector2 = cfg["offset"]
-	if _offset_tween != null and _offset_tween.is_valid():
-		_offset_tween.kill()
-	if instant or target_offset == sprite.position:
-		sprite.position = target_offset
-		return
-	_offset_tween = create_tween()
-	_offset_tween.tween_property(sprite, "position", target_offset, OFFSET_TWEEN_TIME)
+	for s in _portraits:
+		_portraits[s].visible = (s == state)
 
 
-func _trigger_override(state: int) -> void:
+func _trigger_override(state: int, duration: float = OVERRIDE_DURATION) -> void:
 	_override_state = state
-	_override_remaining = OVERRIDE_DURATION
+	_override_remaining = duration
 
 
 func _on_level_changed(new_level: int) -> void:
@@ -106,7 +97,7 @@ func _on_tongue_returned(caught_fly: bool) -> void:
 		return
 	if was_levelup:
 		return
-	_trigger_override(PortraitState.EAT_FINISHED)
+	_trigger_override(PortraitState.EAT_FINISHED, EAT_FINISHED_DURATION)
 
 
 func _on_game_started() -> void:
@@ -118,7 +109,7 @@ func reset_for_new_run() -> void:
 	_override_state = -1
 	_override_remaining = 0.0
 	_levelup_pending = false
-	_apply_state(PortraitState.IDLE, true)
+	_apply_state(PortraitState.IDLE)
 
 
 func _on_game_ended(_final_score: int) -> void:

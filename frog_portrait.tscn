@@ -1,37 +1,114 @@
-[gd_scene load_steps=10 format=3 uid="uid://b1frogportrait001"]
+[gd_scene format=3 uid="uid://cq60g6f6xuj3m"]
 
-[ext_resource type="Script" path="res://frog_portrait.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://art/clean_portraits/Frame.png" id="2_frame"]
-[ext_resource type="Texture2D" path="res://art/clean_portraits/Idle.png" id="3_idle"]
-[ext_resource type="Texture2D" path="res://art/clean_portraits/Charging.png" id="4_charging"]
-[ext_resource type="Texture2D" path="res://art/clean_portraits/Jumping.png" id="5_jumping"]
-[ext_resource type="Texture2D" path="res://art/clean_portraits/BulletTime.png" id="6_bullettime"]
-[ext_resource type="Texture2D" path="res://art/clean_portraits/LevelUp.png" id="7_levelup"]
-[ext_resource type="Texture2D" path="res://art/clean_portraits/Hurt.png" id="8_hurt"]
-[ext_resource type="Texture2D" path="res://art/clean_portraits/EatFinished.png" id="9_eatfinished"]
+[ext_resource type="Script" uid="uid://2wxlrr8h1ufe" path="res://frog_portrait.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://bagv01dtveb35" path="res://art/clean_portraits/Frame.png" id="2_frame"]
+[ext_resource type="Texture2D" uid="uid://cs1jieuagkmri" path="res://art/clean_portraits/Idle.png" id="3_idle"]
+[ext_resource type="Texture2D" uid="uid://dpuplk871vv1o" path="res://art/clean_portraits/Charging.png" id="4_charging"]
+[ext_resource type="Texture2D" uid="uid://dcv84mefivqpi" path="res://art/clean_portraits/Jumping.png" id="5_jumping"]
+[ext_resource type="Texture2D" uid="uid://jdqifxecw8yp" path="res://art/clean_portraits/BulletTime.png" id="6_bullettime"]
+[ext_resource type="Texture2D" uid="uid://cugyqpo5yyn1y" path="res://art/clean_portraits/LevelUp.png" id="7_levelup"]
+[ext_resource type="Texture2D" uid="uid://dyjp3marcanj4" path="res://art/clean_portraits/Hurt.png" id="8_hurt"]
+[ext_resource type="Texture2D" uid="uid://b17w1gr2vu84k" path="res://art/clean_portraits/EatFinished.png" id="9_eatfinished"]
 
-[node name="FrogPortrait" type="CanvasLayer"]
+[node name="FrogPortrait" type="CanvasLayer" unique_id=1172497019]
 process_mode = 3
-visible = false
 script = ExtResource("1_script")
 
-[node name="Anchor" type="Control" parent="."]
+[node name="Anchor" type="Control" parent="." unique_id=1685144743]
+layout_mode = 3
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = -20.0
+offset_left = 50.0
+offset_top = -999.0
+offset_right = 51.0
+offset_bottom = -662.0
 grow_vertical = 0
+scale = Vector2(0.85, 0.85)
+pivot_offset = Vector2(174.32526, 9.89624)
 mouse_filter = 2
 
-[node name="Frame" type="TextureRect" parent="Anchor"]
+[node name="Frame" type="TextureRect" parent="Anchor" unique_id=1149762992]
+layout_mode = 0
+offset_top = 86.54001
+offset_right = 248.23532
+offset_bottom = 343.0
+mouse_filter = 2
 texture = ExtResource("2_frame")
-stretch_mode = 0
-mouse_filter = 2
+expand_mode = 1
 
-[node name="Sprite" type="TextureRect" parent="Anchor"]
-texture = ExtResource("3_idle")
-stretch_mode = 0
+[node name="Idle" type="TextureRect" parent="Anchor" unique_id=1812234299]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 109.7
+offset_right = 225.2
+offset_bottom = 323.0
 mouse_filter = 2
+texture = ExtResource("3_idle")
+expand_mode = 1
+
+[node name="Charging" type="TextureRect" parent="Anchor" unique_id=15760354]
+visible = false
+layout_mode = 0
+offset_left = 26.882355
+offset_top = 120.95291
+offset_right = 234.88235
+offset_bottom = 325.3529
+mouse_filter = 2
+texture = ExtResource("4_charging")
+expand_mode = 1
+
+[node name="Jumping" type="TextureRect" parent="Anchor" unique_id=838656577]
+visible = false
+layout_mode = 0
+offset_left = 25.3
+offset_top = 109.3
+offset_right = 224.7
+offset_bottom = 323.0
+mouse_filter = 2
+texture = ExtResource("5_jumping")
+expand_mode = 1
+
+[node name="BulletTime" type="TextureRect" parent="Anchor" unique_id=1637868223]
+visible = false
+layout_mode = 0
+offset_left = 24.9
+offset_top = 109.6
+offset_right = 225.1
+offset_bottom = 323.0
+mouse_filter = 2
+texture = ExtResource("6_bullettime")
+expand_mode = 1
+
+[node name="LevelUp" type="TextureRect" parent="Anchor" unique_id=80269158]
+visible = false
+layout_mode = 0
+offset_left = 27.347061
+offset_top = 106.129425
+offset_right = 217.94707
+offset_bottom = 326.52942
+mouse_filter = 2
+texture = ExtResource("7_levelup")
+expand_mode = 1
+
+[node name="Hurt" type="TextureRect" parent="Anchor" unique_id=1760054254]
+visible = false
+layout_mode = 0
+offset_left = 26.7
+offset_top = 107.4
+offset_right = 223.3
+offset_bottom = 323.0
+mouse_filter = 2
+texture = ExtResource("8_hurt")
+expand_mode = 1
+
+[node name="EatFinished" type="TextureRect" parent="Anchor" unique_id=1442174281]
+visible = false
+layout_mode = 0
+offset_left = 27.570595
+offset_top = 129.6529
+offset_right = 245.37057
+offset_bottom = 325.3529
+mouse_filter = 2
+texture = ExtResource("9_eatfinished")
+expand_mode = 1

@@ -7,11 +7,11 @@
 [ext_resource type="FontFile" uid="uid://cclv2htxa88fx" path="res://fonts/Spicy Sale.ttf" id="5_font"]
 [ext_resource type="Script" uid="uid://ewuixprwkxdc" path="res://main.gd" id="6_main"]
 [ext_resource type="Texture2D" uid="uid://bm4156n5gd1uw" path="res://art/swamp/main_lily_pad_platform.png" id="7_floor"]
-[ext_resource type="Script" path="res://platform.gd" id="8_platform"]
+[ext_resource type="Script" uid="uid://cyu4yp2d6qya7" path="res://platform.gd" id="8_platform"]
 [ext_resource type="PackedScene" uid="uid://dxv3kjl3ar58t" path="res://title_screen.tscn" id="9_title"]
 [ext_resource type="PackedScene" uid="uid://b3n7k2p8qx1cd" path="res://countdown.tscn" id="10_countdown"]
 [ext_resource type="PackedScene" uid="uid://dp7xm3nq8kfa2" path="res://pre_game_fade.tscn" id="11_pregame"]
-[ext_resource type="PackedScene" path="res://frog_portrait.tscn" id="12_portrait"]
+[ext_resource type="PackedScene" uid="uid://cq60g6f6xuj3m" path="res://frog_portrait.tscn" id="12_portrait"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
 size = Vector2(1200, 80)
@@ -29,14 +29,13 @@ position = Vector2(400, 725)
 
 [node name="Ground" type="AnimatableBody2D" parent="." unique_id=1863808379]
 position = Vector2(768, 830)
-sync_to_physics = true
 script = ExtResource("8_platform")
 
-[node name="LilyPadShadow" type="Sprite2D" parent="Ground"]
+[node name="LilyPadShadow" type="Sprite2D" parent="Ground" unique_id=89014272]
+modulate = Color(0, 0, 0, 0.3)
 z_index = -7
 position = Vector2(0, 22)
 scale = Vector2(0.62, 0.6)
-modulate = Color(0, 0, 0, 0.3)
 texture = ExtResource("7_floor")
 
 [node name="Sprite2D" type="Sprite2D" parent="Ground" unique_id=767962759]
@@ -120,13 +119,13 @@ theme_override_font_sizes/font_size = 56
 text = "Time: 60"
 horizontal_alignment = 1
 
-[node name="TitleScreen" parent="." instance=ExtResource("9_title")]
+[node name="TitleScreen" parent="." unique_id=1260518124 instance=ExtResource("9_title")]
 
-[node name="Countdown" parent="." instance=ExtResource("10_countdown")]
+[node name="Countdown" parent="." unique_id=605462276 instance=ExtResource("10_countdown")]
 
-[node name="PreGameFade" parent="." instance=ExtResource("11_pregame")]
+[node name="PreGameFade" parent="." unique_id=1900024265 instance=ExtResource("11_pregame")]
 
-[node name="FrogPortrait" parent="." instance=ExtResource("12_portrait")]
+[node name="FrogPortrait" parent="." unique_id=1001909873 instance=ExtResource("12_portrait")]
 
 [node name="GameOverScreen" type="CanvasLayer" parent="." unique_id=311599650]
 process_mode = 3
