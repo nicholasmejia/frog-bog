@@ -56,6 +56,8 @@ var mouse_at_takeoff := Vector2.ZERO
 var mouse_moved_in_air := false
 var in_jump_cycle: bool = false
 var frozen: bool = false
+var _tongue_caught_this_shot: bool = false
+var _tongue_was_busy: bool = false
 
 const RESPAWN_MARGIN := 200.0
 
@@ -71,6 +73,7 @@ func _ready() -> void:
 
 
 func _on_tongue_hit_fly(fly) -> void:
+	_tongue_caught_this_shot = true
 	if fly != null and "is_special" in fly and fly.is_special:
 		GameEvents.special_fly_caught.emit()
 		return
@@ -95,6 +98,8 @@ func _reset_frog_state() -> void:
 	was_on_floor = true
 	in_jump_cycle = false
 	GameEvents.is_jumping = false
+	_tongue_caught_this_shot = false
+	_tongue_was_busy = false
 
 
 func set_frozen(value: bool) -> void:
@@ -147,6 +152,7 @@ func _physics_process(delta: float) -> void:
 			and not is_on_floor()
 			and not tongue.is_busy()):
 		var aim: Vector2 = get_global_mouse_position() - tongue.global_position
+		_tongue_caught_this_shot = false
 		tongue.fire(aim)
 
 	var in_air: bool = not is_on_floor()
@@ -207,6 +213,12 @@ func _physics_process(delta: float) -> void:
 	elif not on_floor_now and in_jump_cycle:
 		_update_air_aim()
 	was_on_floor = on_floor_now
+
+	var tongue_busy_now: bool = tongue.is_busy()
+	if _tongue_was_busy and not tongue_busy_now:
+		GameEvents.tongue_returned.emit(_tongue_caught_this_shot)
+		_tongue_caught_this_shot = false
+	_tongue_was_busy = tongue_busy_now
 
 
 func _update_air_aim() -> void:
