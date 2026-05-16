@@ -69,6 +69,16 @@ The end-of-**Title Sequence** beat where each of the 9 glyphs in FROGBOG 99 boun
 **Pre-Game Fade**:
 A black fade-out / fade-in transition that bridges the **Title Screen** (or a **Restart**) into the **Game Start Countdown**.
 
+**Frog Portrait**:
+An animated HUD element in the bottom-left corner showing the Frog's current state. Composed of a static **Portrait Frame** background and a swappable inner **Portrait Sprite** that changes based on the Frog's current activity (idle, charging, jumping, bullet-time, hurt, level-up, eat-finished). The portrait sprite swap is driven by a base-state + single-override state machine: continuous game state determines the base portrait (Idle / Charging / Jumping / BulletTime / EatFinished-while-game-over), and discrete events trigger 2-second timed overrides (LevelUp / Hurt / EatFinished). A newer override replaces an older one; when an override timer ends, the base portrait resumes automatically. First of an intended suite of HUD status indicators.
+_Avoid_: Status indicator, mood indicator, frog face.
+
+**Portrait Frame**:
+The static decorative background (`art/clean_portraits/Frame.png`) that sits behind the **Portrait Sprite**.
+
+**Portrait Sprite**:
+The inner image inside the **Portrait Frame** that swaps among the seven state textures in `art/clean_portraits/` (Idle, Charging, Jumping, LevelUp, Hurt, BulletTime, EatFinished).
+
 **Game Start Countdown**:
 A "3 → 2 → 1 → Start!" sequence that plays over the live game scene before gameplay begins. The **Frog** is frozen in place; **Flies** begin spawning during the countdown so the player anticipates immediate action; the game timer is held at its starting value. "Start!" gradually fades out as the countdown ends.
 
