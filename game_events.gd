@@ -11,6 +11,7 @@ signal frog_fell
 signal game_started
 signal game_ended(final_score: int)
 signal special_fly_caught
+signal tongue_returned(caught_fly: bool)
 signal level_changed(new_level: int)
 signal level_progress_changed(progress: int)
 
@@ -24,3 +25,6 @@ var time_factor: float = 1.0
 var platform_offset: Vector2 = Vector2.ZERO
 var frog_level: int = 0
 var level_progress: int = 0
+var is_charging: bool = false
+var is_jumping: bool = false
+var bullet_time_active: bool = false
