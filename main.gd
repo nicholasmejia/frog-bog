@@ -85,6 +85,7 @@ func _on_fade_to_black() -> void:
 	_update_timer_label()
 	# Hide the title screen if it's still visible (e.g. first run).
 	title_screen.visible = false
+	frog_portrait.reset_for_new_run()
 
 
 func _on_fade_in() -> void:

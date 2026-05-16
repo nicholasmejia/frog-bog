@@ -110,6 +110,10 @@ func _on_tongue_returned(caught_fly: bool) -> void:
 
 
 func _on_game_started() -> void:
+	reset_for_new_run()
+
+
+func reset_for_new_run() -> void:
 	_game_over = false
 	_override_state = -1
 	_override_remaining = 0.0
