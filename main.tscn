@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://dxv3kjl3ar58t" path="res://title_screen.tscn" id="9_title"]
 [ext_resource type="PackedScene" uid="uid://b3n7k2p8qx1cd" path="res://countdown.tscn" id="10_countdown"]
 [ext_resource type="PackedScene" uid="uid://dp7xm3nq8kfa2" path="res://pre_game_fade.tscn" id="11_pregame"]
+[ext_resource type="PackedScene" path="res://frog_portrait.tscn" id="12_portrait"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
 size = Vector2(1200, 80)
@@ -124,6 +125,8 @@ horizontal_alignment = 1
 [node name="Countdown" parent="." instance=ExtResource("10_countdown")]
 
 [node name="PreGameFade" parent="." instance=ExtResource("11_pregame")]
+
+[node name="FrogPortrait" parent="." instance=ExtResource("12_portrait")]
 
 [node name="GameOverScreen" type="CanvasLayer" parent="." unique_id=311599650]
 process_mode = 3
