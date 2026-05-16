@@ -60,6 +60,7 @@ func _update_time(delta: float) -> void:
 		remaining -= delta
 		if remaining <= 0.0:
 			remaining = 0.0
+	GameEvents.bullet_time_active = remaining > 0.0
 	var target: float = TARGET_FACTOR if remaining > 0.0 else 1.0
 	var t: float = clampf(LERP_RATE * delta, 0.0, 1.0)
 	GameEvents.time_factor = lerpf(GameEvents.time_factor, target, t)
@@ -93,5 +94,6 @@ func _on_game_started() -> void:
 	remaining = 0.0
 	pulse_phase = 0.0
 	GameEvents.time_factor = 1.0
+	GameEvents.bullet_time_active = false
 	sparkles.emitting = false
 	sprite.modulate = Color(1, 1, 1, 1)
