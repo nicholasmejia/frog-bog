@@ -84,6 +84,7 @@ func _on_game_started() -> void:
 func _reset_frog_state() -> void:
 	velocity = Vector2.ZERO
 	charging = false
+	GameEvents.is_charging = false
 	charge_time = 0.0
 	shake_phase = 0.0
 	sprite.offset = Vector2.ZERO
@@ -93,6 +94,7 @@ func _reset_frog_state() -> void:
 	sprite.play("idle")
 	was_on_floor = true
 	in_jump_cycle = false
+	GameEvents.is_jumping = false
 
 
 func set_frozen(value: bool) -> void:
@@ -100,6 +102,7 @@ func set_frozen(value: bool) -> void:
 	if frozen:
 		velocity = Vector2.ZERO
 		charging = false
+		GameEvents.is_charging = false
 		charge_time = 0.0
 		shake_phase = 0.0
 		sprite.offset = Vector2.ZERO
@@ -155,6 +158,7 @@ func _physics_process(delta: float) -> void:
 	if is_on_floor():
 		if Input.is_action_just_pressed("jump"):
 			charging = true
+			GameEvents.is_charging = true
 			charge_time = 0.0
 			sprite.play("charging")
 			GameEvents.platform_charge.emit()
@@ -181,6 +185,7 @@ func _physics_process(delta: float) -> void:
 	if on_floor_now and not was_on_floor:
 		if in_jump_cycle:
 			in_jump_cycle = false
+			GameEvents.is_jumping = false
 			tongue.cancel()
 			var land_dir: float = signf(velocity.x)
 			facing_right = not facing_right
@@ -274,6 +279,7 @@ func _update_shake(delta: float) -> void:
 
 func _launch() -> void:
 	charging = false
+	GameEvents.is_charging = false
 	shake_phase = 0.0
 	sprite.offset = Vector2.ZERO
 	var t: float = clampf(charge_time, MIN_CHARGE, MAX_CHARGE)
@@ -287,3 +293,4 @@ func _launch() -> void:
 	velocity.y = vy
 	charge_time = 0.0
 	in_jump_cycle = true
+	GameEvents.is_jumping = true
