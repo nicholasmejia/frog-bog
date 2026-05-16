@@ -13,6 +13,7 @@ enum State { TITLE, PRE_GAME, COUNTDOWN, PLAYING, GAME_OVER }
 @onready var game_over_screen: CanvasLayer = $GameOverScreen
 @onready var final_score_label: Label = $GameOverScreen/Center/VBox/FinalScoreLabel
 @onready var restart_button: Button = $GameOverScreen/Center/VBox/RestartButton
+@onready var frog_portrait: CanvasLayer = $FrogPortrait
 
 var state: int = State.TITLE
 var time_left: float = GAME_DURATION
@@ -52,6 +53,7 @@ func _enter_title() -> void:
 	frog.global_position = frog_spawn
 	frog.set_frozen(true)
 	game_over_screen.visible = false
+	frog_portrait.visible = false
 	get_tree().paused = true
 	title_screen.play()
 
@@ -67,6 +69,7 @@ func _on_restart_pressed() -> void:
 func _begin_pre_game() -> void:
 	state = State.PRE_GAME
 	game_over_screen.visible = false
+	frog_portrait.visible = false
 	# Engine stays paused; PreGameFade has process_mode = ALWAYS so it animates anyway.
 	get_tree().paused = true
 	pre_game_fade.play()
@@ -88,6 +91,7 @@ func _on_fade_in() -> void:
 	# Black has just faded out; start the countdown.
 	state = State.COUNTDOWN
 	get_tree().paused = false  # Flies must spawn during the countdown.
+	frog_portrait.visible = true
 	countdown.play()
 
 
