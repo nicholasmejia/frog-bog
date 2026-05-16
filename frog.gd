@@ -56,6 +56,8 @@ var mouse_at_takeoff := Vector2.ZERO
 var mouse_moved_in_air := false
 var in_jump_cycle: bool = false
 var frozen: bool = false
+var _tongue_caught_this_shot: bool = false
+var _tongue_was_busy: bool = false
 
 const RESPAWN_MARGIN := 200.0
 
@@ -71,6 +73,7 @@ func _ready() -> void:
 
 
 func _on_tongue_hit_fly(fly) -> void:
+	_tongue_caught_this_shot = true
 	if fly != null and "is_special" in fly and fly.is_special:
 		GameEvents.special_fly_caught.emit()
 		return
@@ -84,6 +87,7 @@ func _on_game_started() -> void:
 func _reset_frog_state() -> void:
 	velocity = Vector2.ZERO
 	charging = false
+	GameEvents.is_charging = false
 	charge_time = 0.0
 	shake_phase = 0.0
 	sprite.offset = Vector2.ZERO
@@ -93,6 +97,9 @@ func _reset_frog_state() -> void:
 	sprite.play("idle")
 	was_on_floor = true
 	in_jump_cycle = false
+	GameEvents.is_jumping = false
+	_tongue_caught_this_shot = false
+	_tongue_was_busy = false
 
 
 func set_frozen(value: bool) -> void:
@@ -100,6 +107,7 @@ func set_frozen(value: bool) -> void:
 	if frozen:
 		velocity = Vector2.ZERO
 		charging = false
+		GameEvents.is_charging = false
 		charge_time = 0.0
 		shake_phase = 0.0
 		sprite.offset = Vector2.ZERO
@@ -144,6 +152,7 @@ func _physics_process(delta: float) -> void:
 			and not is_on_floor()
 			and not tongue.is_busy()):
 		var aim: Vector2 = get_global_mouse_position() - tongue.global_position
+		_tongue_caught_this_shot = false
 		tongue.fire(aim)
 
 	var in_air: bool = not is_on_floor()
@@ -155,6 +164,7 @@ func _physics_process(delta: float) -> void:
 	if is_on_floor():
 		if Input.is_action_just_pressed("jump"):
 			charging = true
+			GameEvents.is_charging = true
 			charge_time = 0.0
 			sprite.play("charging")
 			GameEvents.platform_charge.emit()
@@ -181,6 +191,7 @@ func _physics_process(delta: float) -> void:
 	if on_floor_now and not was_on_floor:
 		if in_jump_cycle:
 			in_jump_cycle = false
+			GameEvents.is_jumping = false
 			tongue.cancel()
 			var land_dir: float = signf(velocity.x)
 			facing_right = not facing_right
@@ -202,6 +213,12 @@ func _physics_process(delta: float) -> void:
 	elif not on_floor_now and in_jump_cycle:
 		_update_air_aim()
 	was_on_floor = on_floor_now
+
+	var tongue_busy_now: bool = tongue.is_busy()
+	if _tongue_was_busy and not tongue_busy_now:
+		GameEvents.tongue_returned.emit(_tongue_caught_this_shot)
+		_tongue_caught_this_shot = false
+	_tongue_was_busy = tongue_busy_now
 
 
 func _update_air_aim() -> void:
@@ -274,6 +291,7 @@ func _update_shake(delta: float) -> void:
 
 func _launch() -> void:
 	charging = false
+	GameEvents.is_charging = false
 	shake_phase = 0.0
 	sprite.offset = Vector2.ZERO
 	var t: float = clampf(charge_time, MIN_CHARGE, MAX_CHARGE)
@@ -287,3 +305,4 @@ func _launch() -> void:
 	velocity.y = vy
 	charge_time = 0.0
 	in_jump_cycle = true
+	GameEvents.is_jumping = true
