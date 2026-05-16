@@ -30,6 +30,7 @@ var _override_remaining: float = 0.0
 var _game_over: bool = false
 var _current_applied: int = -1
 var _offset_tween: Tween = null
+var _levelup_pending: bool = false
 
 
 func _ready() -> void:
@@ -87,16 +88,23 @@ func _trigger_override(state: int) -> void:
 
 func _on_level_changed(new_level: int) -> void:
 	if new_level <= 0:
+		_levelup_pending = false
 		return
+	_levelup_pending = true
 	_trigger_override(PortraitState.LEVEL_UP)
 
 
 func _on_frog_fell() -> void:
+	_levelup_pending = false
 	_trigger_override(PortraitState.HURT)
 
 
 func _on_tongue_returned(caught_fly: bool) -> void:
+	var was_levelup: bool = _levelup_pending
+	_levelup_pending = false
 	if not caught_fly:
+		return
+	if was_levelup:
 		return
 	_trigger_override(PortraitState.EAT_FINISHED)
 
@@ -105,6 +113,7 @@ func _on_game_started() -> void:
 	_game_over = false
 	_override_state = -1
 	_override_remaining = 0.0
+	_levelup_pending = false
 	_apply_state(PortraitState.IDLE, true)
 
 
